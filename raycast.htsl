@@ -1,0 +1,340 @@
+// Raycast
+
+// Credits:
+// By Novys (mncd)
+// -> Branched off of chikn's Raycast, 2nd Generation
+// --> Branched off of Cacti's Raycast, 1st Generation
+
+/*
+Usage
+
+1. Input
+
+Settings:
+    globalvar ray/ID = 1
+Optional Settings:
+    globalvar ray/range (Default: 10)
+    globalvar ray/width (Default: 1)
+
+2. Run Function
+    function "Raycast Initiate"
+
+From this point, "Raycast Collide" will be run by the target and "Raycast Sent" will be run on successful Raycast Check.
+Use ray/ID and ray/returnID to modify behavior.
+*/
+
+// fxn init
+goto function "Raycast Initiate"
+goto function "Raycast Check"
+goto function "Raycast Sent"
+
+goto function "Raycast Initiate"
+
+globalvar ray/x1 = %player.location.x%
+globalvar ray/y1 = %player.location.y%
+globalvar ray/z1 = %player.location.z%
+
+globalvar ray/yaw = %player.location.yaw%
+globalvar ray/pitch = %player.location.pitch%
+
+globalvar ray/playerID = var playerID 0
+
+globalvar ray/returnID Unset
+
+function "Raycast Check" true
+function "Raycast Sent"
+
+globalvar ray/ID Unset
+globalvar ray/returnID Unset
+globalvar ray/playerID Unset
+
+
+goto function "Raycast Sent"
+
+/*
+// examples
+if (globalvar ray/returnID = 1 0) {
+    sound "Orb Pickup" 0.7 1 custom_coordinates "~ ~ ~"
+}
+if (globalvar ray/returnID = 2 0) {
+    sound "Orb Pickup" 0.7 1 custom_coordinates "~ ~ ~"
+    chat "Boop!"
+}
+*/
+
+
+goto function "Raycast Collide"
+
+/*
+// examples
+if (globalvar ray/ID = 1 0) {
+    changeHealth -= 4
+    sound "Hurt Flesh" 0.7 1 custom_coordinates "~ ~ ~"
+
+    globalvar ray/returnID = 1
+}
+if (globalvar ray/ID = 2 0) {
+    var math = 5
+    var math -= var sqrtOutput 0
+    var math *= 2
+
+    changeHealth -= var math 0
+    sound "Hurt Flesh" 0.7 1 custom_coordinates "~ ~ ~"
+
+    globalvar ray/returnID = 2
+}
+*/
+
+
+goto function "Raycast Check"
+
+if (!globalvar ray/playerID = var playerID 0) {
+    var ray/dx = globalvar ray/x1 0
+    var ray/dx -= %player.location.x%
+    var ray/dy = globalvar ray/y1 0
+    var ray/dy -= %player.location.y%
+    var ray/dz = globalvar ray/z1 0
+    var ray/dz -= %player.location.z%
+    globalvar a = var ray/dx 0
+    globalvar a *= var ray/dx 0
+    var ray/dist2 = globalvar a 0
+    globalvar a = var ray/dy 0
+    globalvar a *= var ray/dy 0
+    var ray/dist2 += globalvar a 0
+    globalvar a = var ray/dz 0
+    globalvar a *= var ray/dz 0
+    var ray/dist2 += globalvar a 0
+} else {
+    exit
+}
+
+if () {
+    teamvar b temp = 3037000498
+    teamvar b temp /= var ray/dist2 0
+    teamvar b temp += 1
+ 
+    var ray/dist2 *= %var.team/b temp 0%
+    var ray/dist2 *= %var.team/b temp 0%
+ 
+    teamvar a temp = var ray/dist2 0
+    teamvar a temp /= 537752656
+    teamvar a temp += 880298
+ 
+    globalvar a = var ray/dist2 0
+    globalvar a /= %var.team/a temp 0%
+    globalvar a += %var.team/a temp 0%
+ 
+    teamvar a temp = var ray/dist2 0
+    teamvar a temp /= globalvar a 0
+    globalvar a /= 4
+    globalvar a += %var.team/a temp 0%
+ 
+    globalvar b = var ray/dist2 0
+    globalvar b /= globalvar a 0
+    globalvar b += globalvar a 0
+ 
+    teamvar a temp = var ray/dist2 0
+    teamvar a temp /= globalvar b 0
+    globalvar b /= 4
+    globalvar b += %var.team/a temp 0%
+ 
+    var ray/dist = var ray/dist2 0
+    var ray/dist /= globalvar b 0
+    var ray/dist += globalvar b 0
+}
+
+if () {
+    var ray/dist2 /= var ray/dist 0
+    var ray/dist /= 4
+    var ray/dist += var ray/dist2 0
+    var ray/dist2 Unset
+ 
+    var ray/dist += 1
+    var ray/dist /= %var.team/b temp 0%
+
+    var ray/dx Unset
+    var ray/dy Unset
+    var ray/dz Unset
+}
+
+if () {
+// cos
+    var fxnInput = globalvar ray/yaw 0
+    var fxnInput += 4611686018427450000
+    teamvar a temp = var fxnInput 0
+    teamvar a temp /= 360000
+    teamvar a temp *= 360000
+    var fxnInput -= %var.team/a temp 0%
+    var fxnInput -= 180000
+    globalvar a = var fxnInput 0
+    globalvar a += 180001
+    globalvar a /= 180001
+    globalvar a *= 2
+    globalvar a -= 1
+    var fxnInput *= globalvar a 0
+    globalvar a *= -1
+    teamvar a temp = 179968
+    teamvar a temp -= var fxnInput 0
+    teamvar a temp *= var fxnInput 0
+    var ray/closestRayZ = 4005
+    var ray/closestRayZ *= %var.team/a temp 0%
+    teamvar b temp = 40500000000
+    teamvar b temp -= %var.team/a temp 0%
+    var ray/closestRayZ /= %var.team/b temp 0%
+    var ray/closestRayZ *= globalvar a 0
+    var ray/closestRayZ *= var ray/dist 0
+    var ray/closestRayZ /= 1000
+}
+
+if () {
+// sin
+    var fxnInput = globalvar ray/pitch 0
+    var fxnInput += 4611686018427360000
+    teamvar a temp = var fxnInput 0
+    teamvar a temp /= 360000
+    teamvar a temp *= 360000
+    var fxnInput -= %var.team/a temp 0%
+    var fxnInput -= 180000
+    globalvar a = var fxnInput 0
+    globalvar a += 180001
+    globalvar a /= 180001
+    globalvar a *= 2
+    globalvar a -= 1
+    var fxnInput *= globalvar a 0
+    globalvar a *= -1
+    teamvar a temp = 179968
+    teamvar a temp -= var fxnInput 0
+    teamvar a temp *= var fxnInput 0
+    var ray/closestRayY = 4005
+    var ray/closestRayY *= %var.team/a temp 0%
+    teamvar b temp = 40500000000
+    teamvar b temp -= %var.team/a temp 0%
+    var ray/closestRayY /= %var.team/b temp 0%
+    var ray/closestRayY *= globalvar a 0
+    var ray/closestRayY *= var ray/dist 0
+
+    var ray/closestRayY /= 1000
+}
+
+if () {
+// sin
+    var fxnInput = globalvar ray/yaw 0
+    var fxnInput += 4611686018427360000
+    teamvar a temp = var fxnInput 0
+    teamvar a temp /= 360000
+    teamvar a temp *= 360000
+    var fxnInput -= %var.team/a temp 0%
+    var fxnInput -= 180000
+    globalvar a = var fxnInput 0
+    globalvar a += 180001
+    globalvar a /= 180001
+    globalvar a *= 2
+    globalvar a -= 1
+    var fxnInput *= globalvar a 0
+    globalvar a *= -1
+    teamvar a temp = 179968
+    teamvar a temp -= var fxnInput 0
+    teamvar a temp *= var fxnInput 0
+    var ray/closestRayX = 4005
+    var ray/closestRayX *= %var.team/a temp 0%
+    teamvar b temp = 40500000000
+    teamvar b temp -= %var.team/a temp 0%
+    var ray/closestRayX /= %var.team/b temp 0%
+    var ray/closestRayX *= globalvar a 0
+    var ray/closestRayX *= var ray/dist 0
+}
+
+if () {
+    var ray/closestRayX /= 1000
+
+    var ray/closestRayX *= -1
+    var ray/closestRayX += globalvar ray/x1 0
+    var ray/closestRayY *= -1
+    var ray/closestRayY += globalvar ray/y1 0
+    var ray/closestRayY += 1
+    var ray/closestRayZ += globalvar ray/z1 0
+
+    var ray/closestRayX -= %player.location.x%
+    var ray/closestRayY -= %player.location.y%
+}
+
+if () {
+    var ray/closestRayZ -= %player.location.z%
+
+    var ray/closestRayX *= var ray/closestRayX 0
+    var ray/closestRayY *= var ray/closestRayY 0
+    var ray/closestRayZ *= var ray/closestRayZ 0
+
+    var ray/closestRayX += var ray/closestRayY 0
+    var ray/closestRayX += var ray/closestRayZ 0
+}
+
+if () {
+    teamvar b temp = 3037000498
+    teamvar b temp /= var ray/closestRayX 0
+    teamvar b temp += 1
+ 
+    var ray/closestRayX *= %var.team/b temp 0%
+    var ray/closestRayX *= %var.team/b temp 0%
+ 
+    teamvar a temp = var ray/closestRayX 0
+    teamvar a temp /= 537752656
+    teamvar a temp += 880298
+ 
+    globalvar a = var ray/closestRayX 0
+    globalvar a /= %var.team/a temp 0%
+    globalvar a += %var.team/a temp 0%
+ 
+    teamvar a temp = var ray/closestRayX 0
+    teamvar a temp /= globalvar a 0
+    globalvar a /= 4
+    globalvar a += %var.team/a temp 0%
+ 
+    globalvar b = var ray/closestRayX 0
+    globalvar b /= globalvar a 0
+    globalvar b += globalvar a 0
+ 
+    teamvar a temp = var ray/closestRayX 0
+    teamvar a temp /= globalvar b 0
+    globalvar b /= 4
+    globalvar b += %var.team/a temp 0%
+ 
+    var fxnOutput = var ray/closestRayX 0
+    var fxnOutput /= globalvar b 0
+    var fxnOutput += globalvar b 0
+}
+
+if () {
+    var ray/closestRayX /= var fxnOutput 0
+    var fxnOutput /= 4
+    var fxnOutput += var ray/closestRayX 0
+ 
+    var fxnOutput += 1
+    var fxnOutput /= %var.team/b temp 0%
+}
+
+if (var fxnOutput <= globalvar ray/width 1, var ray/dist <= globalvar ray/range 10)  {
+    function "Raycast Collide"
+
+    var ray/dist Unset
+    globalvar ray/yaw Unset
+    globalvar ray/pitch Unset
+    globalvar ray/id Unset
+    globalvar ray/x1 Unset
+    globalvar ray/y1 Unset
+    globalvar ray/z1 Unset
+}
+
+if () {
+    globalvar a Unset
+    globalvar b Unset
+    teamvar a temp Unset
+    teamvar b temp Unset
+
+    var fxnInput Unset
+    var fxnOutput Unset
+
+    var ray/closestRayX Unset
+    var ray/closestRayY Unset
+    var ray/closestRayZ Unset
+}
